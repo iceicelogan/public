@@ -11,9 +11,10 @@ def is_prime(number):
     # Initialize our response variable
     truth = True
 
-    # If the input is > 1, loop through all numbers until the sqrt of input
-    # Check if module = 0, meaning a number fits evenly in it (aka not prime)
-    # We can stop short at the sqrt, as all other factors correspond to a lower number that we have already passed
+    # If the input is > 1, loop through all numbers until the square root of input
+    # Check if modulo = 0, meaning a number fits evenly in it (aka not prime)
+    # We can stop short at the square root,
+    # as all other factors correspond to a lower number that we have already passed
     if number > 1:
         for i in range(2, number**.5):
             if number % i == 0:
