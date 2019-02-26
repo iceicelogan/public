@@ -1,0 +1,75 @@
+library(dplyr)
+library(ggplot2)
+df3 <- read.csv('/Users/logan.ice/Documents/python_code/df3.csv', stringsAsFactors = FALSE)
+df3$Number.of.Reviews <- as.numeric(gsub(",","", df3$Number.of.Reviews))
+
+df3 <- arrange(df3, desc(Rating)) %>%
+  mutate(rank = 247 - nrow(df3):1) 
+
+
+iterate_chart <- function(var){
+  
+  if(var <= 5){
+    vals = c('#4b0c11')
+  } else if(var <= 7){
+    vals = c('#c38e0d','#4b0c11')
+  } else if(var <= 12){
+    vals = c('#c38e0d','#e9d76c','#4b0c11')
+  } else {
+    vals = c('#c38e0d','white','#e9d76c', '#4b0c11')
+  }
+  
+  ggplot(data = filter(df3, rank <= var), aes(x = ABV, y = Rating, color = Category)) +
+    geom_point(color = 'black', size = 3) +
+    scale_colour_manual(values = vals) +
+    geom_point(size = 2) +
+    ylim(4.45,5.0) +
+    xlim(0,30) +
+    labs(title = "Rating vs. ABV by Style",
+         subtitle = "Beer Advocate's Top 250 Beers") +
+    theme(plot.title = element_text(size=22),
+          plot.subtitle = element_text(size = 13, face = 'italic'),
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(), 
+          axis.line = element_line(color = "black", size = 1.25),
+          axis.text = element_text(size = 13, color = "black"),
+          axis.title = element_text(size = 15, color = "black"),
+          legend.justification=c(1,1), 
+          legend.position=c(1,1),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 13))
+}
+
+
+
+len <- nrow(df3)
+
+location<-"/Users/logan.ice/Documents/git/public/R/beer_pngs"
+
+for (i in 1:(len+10)) {
+  p <- if(i <= 50){
+    paste(replicate(i,"1"),collapse="")
+  } else if(i <= 100) {
+    paste(replicate(i,"2"),collapse="")
+  } else if(i <= 150) {
+    paste(replicate(i,"3"),collapse="")
+  } else if(i <= 200) {
+    paste(replicate(i,"4"),collapse="")
+  } else if(i <= 250) {
+    paste(replicate(i,"5"),collapse="")
+  } else{
+    paste(replicate(i,"6"),collapse="")
+  }
+  
+  file_path = paste0(location, "/plot-",p,".png")
+  g<-iterate_chart(i)
+  ggsave(file_path, g, width = 10, height = 8, units = "cm",scale=2) 
+  
+  print(paste(i,"out of",nrow(df3)+10))
+}
+
+setwd(location)
+
+system("convert -delay 4 *.png beer_ratings.gif")
+file.remove(list.files(pattern=".png"))
