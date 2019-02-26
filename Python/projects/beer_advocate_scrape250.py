@@ -1,8 +1,9 @@
 #################################################
+#                                               #
 # Code to pull top 250 Beers from Beer Advocate #
 # Exports data as .csv for further manipulation #
+#                                               #
 #################################################
-
 
 # Import Relevant packages
 from bs4 import BeautifulSoup

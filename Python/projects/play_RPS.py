@@ -1,35 +1,69 @@
+#########################################
+#                                       #
+#    Let's Play Rock/Paper/Scissors!    #
+# Game uses input() to play a PvC round #
+#                                       #
+#########################################
 
 
-def play_RPS():
-    def initialinput():
-        global player1move
-        global player2move
-        player1move = input("Player1: Choose your weapon! ")
-        while player1move not in ['rock','paper','scissors']:
-            player1move = input("Come on, Player 1, get it together! Pick 'rock', 'paper', or 'scissors': ")
-        player2move = input("Ok, cool. Player2: Choose your weapon: ")
-        while player2move not in ['rock','paper','scissors']:
-            player2move = input("Come on, Player 2, get it together! Pick 'rock', 'paper', or 'scissors': ")
+def play_rps():
 
-    def pick_winner():
-        initialinput()
-        if player1move == player2move:
-            print("Draw! Choose Again: ")
-            pick_winner()
-        elif player1move == 'rock':
-            if player2move == 'scissors':
-                print("Player 1 Wins, Rock over Scissors!")
-            else:
-                print("Player 2 Wins, Paper over Rock!")
-        elif player1move == 'scissors':
-            if player2move == 'rock':
-                print("Player 2 Wins, Rock over Scissors!")
-            else:
-                print("Player 1 Wins, Scissors over Paper!")
-        elif player2move == 'scissors':
-            print("Player2 Wins, Scissors over Paper!")
+    # import the random package so we can define a "random" computer input
+    import random
+
+    # Define a global variable of the User's name. Any input is allowed here.
+    global player_name
+    player_name = input("Welcome to the game! What is your name? ")
+
+    # Define a nested function "initial input" that will be the start of our RPS game
+    def initial_input():
+
+        # Set up player and computer moves to be global, so they can be accessed beyond this method
+        global player_move
+        global computer_move
+
+        # Ask the user for their weapon of choice
+        player_move = input("Welcome, "+player_name + "! \nChoose your weapon: \nSelect rock, paper, or scissors:")
+
+        # If the player does not select a correct weapon, make them choose again
+        while player_move.lower() not in ['rock', 'paper', 'scissors']:
+            player_move = input("Come on, "+player_name+", get it together! Pick 'rock', 'paper', or 'scissors': ")
+
+        # Define the computer's move to be a random option of the 3 available.
+        comp_test = random.randint(1, 3)
+        if comp_test == 1:
+            computer_move = 'rock'
+        elif comp_test == 2:
+            computer_move = 'paper'
         else:
-            print("Player1 Wins, Paper over Rock!")
-    pick_winner()
+            computer_move = 'scissors'
 
-play_RPS()
+    # Now that we have our inputs, we can define a function to choose a winner
+    def pick_winner():
+
+        # First, call the initial_input function to get our moves
+        initial_input()
+
+        # If the move is the same as the computer's random move, have the player and computer choose again
+        if player_move.lower() == computer_move:
+            print("Draw! Choose Again, "+player_name+"!")
+            pick_winner()
+
+        # Nested boolean logic - Print the result of the game if there is no tie!
+        elif player_move.lower() == 'rock':
+            if computer_move == 'scissors':
+                print(player_name+" Wins, Rock over Scissors!")
+            else:
+                print("Sorry, "+player_name+", the computer won - Paper over Rock")
+        elif player_move.lower() == 'scissors':
+            if computer_move == 'rock':
+                print("Sorry, "+player_name+", the computer won - Rock over Scissors")
+            else:
+                print(player_name+" Wins, Scissors over Paper!")
+        elif computer_move == 'scissors':
+            print("Sorry, "+player_name+", the computer won - Scissors over Paper")
+        else:
+            print(player_name+" Wins, Paper over Rock!")
+
+    # Call the function pick_winner (which in turn calls initial_input
+    pick_winner()
