@@ -1,0 +1,10 @@
+ice_theme <- theme(plot.title = element_text(size=22),
+      plot.subtitle = element_text(size = 13, face = 'italic'),
+      panel.grid.major = element_blank(), 
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(), 
+      axis.line = element_line(color = "black", size = 1.25),
+      axis.text = element_text(size = 13, color = "black"),
+      axis.title = element_text(size = 15, color = "black"),
+      legend.title = element_text(size = 15),
+      legend.text = element_text(size = 13))
