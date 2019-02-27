@@ -10,6 +10,10 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
+**Life Expectancy vs. Income, [R Datasets](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)**
+![Life Expectancy](https://i.imgur.com/SyXb0ub.png)
+
+***
+
 **Real GDP and Unemployment from [The Fed](https://fred.stlouisfed.org/)**
 ![Political things](https://i.imgur.com/EkUDd8q.png)
-
