@@ -14,7 +14,7 @@ library(ggplot2)
 
 
 # Read appropriate csv (change path to match your system)
-df3 <- read.csv('/Users/logan.ice/Documents/python_code/df3.csv', stringsAsFactors = FALSE)
+df3 <- read.csv('/Users/logan.ice/Documents/git/public/R/projects/beer/df3.csv', stringsAsFactors = FALSE)
 
 
 # Add a "rank" field, Ranking each beer by rating
