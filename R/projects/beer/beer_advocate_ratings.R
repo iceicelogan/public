@@ -1,6 +1,7 @@
 #############################################################
 #                                                           #
 #  Program to read csv and produce gif of associated plots  #
+#                   Data is of Beer!                        #
 #                                                           #
 #############################################################
 
@@ -27,6 +28,7 @@ iterate_chart <- function(var){
   
   # Conditional logic to set the colors of each Category
   # This is manually set. Could automate in future
+  # Hex Codes match the appropriate SRM by style
   if(var <= 5){
     vals = c('#4b0c11')
   } else if(var <= 7){
