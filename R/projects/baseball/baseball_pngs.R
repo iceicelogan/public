@@ -14,7 +14,7 @@ library(ggplot2)
 
 
 # Read csv file (change as needed)
-batting <- read.csv('file',stringsAsFactors = FALSE)
+batting <- read.csv('/Users/logan.ice/Documents/git/public/R/projects/baseball/baseball_filles/Batting.csv',stringsAsFactors = FALSE)
 
 
 # Filter data to 1910+
@@ -23,8 +23,9 @@ batting <- read.csv('file',stringsAsFactors = FALSE)
 b2 <- batting %>%
   filter(yearID > 1910 ) %>%
   group_by(yearID) %>%
-  summarise(SO = sum(SO), AB = sum(AB)) %>%
+  summarise(SO = sum(SO), AB = sum(AB), BB = sum(BB), H = sum(H)) %>%
   mutate(batting_average = H/(AB),strikeout_rate = SO/(AB+BB))
+
 
 
 # Create a charting function with a max date
@@ -32,17 +33,38 @@ b2 <- batting %>%
 chart_it<-function(dateMax=max(b2$yearID)){
   
   ggplot(data=filter(b2, yearID <= dateMax), aes(x=yearID))+
-    geom_point(aes(y = strikeout_rate, color = "strikeout_rate")) + 
-    geom_point(aes(y = batting_average, color = "batting_average")) + 
+    scale_colour_manual(values = c("black", "orange")) +
+    geom_point(aes(y = strikeout_rate, color = "Strikeout Rate")) + 
+    geom_point(aes(y = batting_average, color = "Batting Avg.")) + 
     geom_smooth(aes(y = strikeout_rate)) +
     geom_smooth(aes(y = batting_average)) +
     xlim(1910,2018) +
     ylim(0.055,0.30) +
     labs(title = paste0("Strikeouts and Batting Average From 1910 - ",dd)) +
     ylab("Rate") +
-    theme_bw()
+    xlab("Year") +
+    guides(color=guide_legend(title="Color")) +
+    theme(
+      
+      # Generates a large title and a smaller, italicized subtitle
+      plot.title = element_text(size=22),
+      plot.subtitle = element_text(size = 13, face = 'italic'),
+      
+      # Remove gridlines and background
+      panel.grid.major = element_blank(), 
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(),
+      
+      # Create bold axis line and increase size of axis text
+      axis.line = element_line(color = "black", size = 1.25),
+      axis.text = element_text(size = 13, color = "black"),
+      axis.title = element_text(size = 15, color = "black"),
+      
+      # Increase size of Legend
+      legend.title = element_text(size = 15),
+      legend.text = element_text(size = 13))
+    
 }
-
 
 # Get a list of all years in our dataset, and save that length
 list_of_years <- unique(b2$yearID)
@@ -57,9 +79,9 @@ location<-"your_location_here"
 for (i in 1:(len+10)) {
   file_path = paste0(location, "/plot-",1910+i ,".png")
   g<-chart_it(dlist[min(i,length(dlist))])
-  ggsave(file_path, g, width = 10, height = 8, units = "cm",scale=2) 
-  
-  
+  ggsave(file_path, g, width = 10, height = 8, units = "cm",scale=2)
+
+
   # For clarity, print progress for the user
   print(paste(i,"out of",length(dlist)+10))
 }
