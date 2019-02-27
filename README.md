@@ -1,5 +1,5 @@
 # Public Repository - iceicelogan
-This is a repository to store my personal projects. I've divided them into overall folders for the two main languages I use, [Python](https://github.com/iceicelogan/public/Python) and [R](https://github.com/iceicelogan/public/R), and further into what types of file they are.
+This is a repository to store my personal projects. I've divided them into overall folders for the two main languages I use, [Python](https://github.com/iceicelogan/public/tree/master/Python) and [R](https://github.com/iceicelogan/public/tree/master/R), and further into what types of file they are.
 
 ***
 
