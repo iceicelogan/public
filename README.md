@@ -10,6 +10,12 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
+
+**Life Expectancy for the Americas from [Gapminder](https://cran.r-project.org/web/packages/gapminder/index.html)**
+![life Expectancy](https://i.imgur.com/cUBrWu5.png)
+
+***
+
 **Baseball Strikeouts vs. Batting Avg. From [Lahman](http://www.seanlahman.com/baseball-archive/statistics)**
 ![baseball](https://i.imgur.com/XeA1mS1.png)
 
@@ -23,3 +29,5 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 **Real GDP and Unemployment from [The Fed](https://fred.stlouisfed.org/)**
 ![Political things](https://i.imgur.com/EkUDd8q.png)
+
+
