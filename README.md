@@ -10,8 +10,14 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
+**Baseball Strikeouts vs. Batting Avg. From [Lahman](http://www.seanlahman.com/baseball-archive/statistics)**
+![baseball](https://i.imgur.com/XeA1mS1.png)
+
+***
+
 **Life Expectancy vs. Income, [R Datasets](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)**
 ![Life Expectancy](https://i.imgur.com/SyXb0ub.png)
+
 
 ***
 
