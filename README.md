@@ -21,6 +21,11 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
+**Predicting Cab Fare in NYC via Random Forests, on [DataCamp](https://www.datacamp.com/projects/496)**
+![Cab Fare](https://i.imgur.com/7aAT6o3.jpg)
+
+***
+
 **Life Expectancy vs. Income, [R Datasets](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)**
 ![Life Expectancy](https://i.imgur.com/SyXb0ub.png)
 
