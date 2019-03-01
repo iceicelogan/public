@@ -16,6 +16,11 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
+**Top Programming Language by Year from [TIOBE Index](https://www.tiobe.com/tiobe-index/)**
+![code](https://i.imgur.com/1pbT6BC.png)
+
+***
+
 **Baseball Strikeouts vs. Batting Avg. From [Lahman](http://www.seanlahman.com/baseball-archive/statistics)**
 ![baseball](https://i.imgur.com/XeA1mS1.png)
 
@@ -34,5 +39,8 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 **Real GDP and Unemployment from [The Fed](https://fred.stlouisfed.org/)**
 ![Political things](https://i.imgur.com/EkUDd8q.png)
+
+
+
 
 
