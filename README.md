@@ -5,6 +5,11 @@ This is a repository to store my personal projects. I've divided them into overa
 
 I'll add a few of my favorite visualizations here, but more live within the above linked folders.
 
+**Top Programming Language by Year from [TIOBE Index](https://www.tiobe.com/tiobe-index/)**
+![code](https://i.imgur.com/8okTzAV.jpg)
+
+***
+
 **Top 250 Ratings on [Beer Advocate](https://www.beeradvocate.com/lists/top/)**
 ![beer](https://i.imgur.com/Y0xrTJi.png)
 
@@ -16,10 +21,6 @@ I'll add a few of my favorite visualizations here, but more live within the abov
 
 ***
 
-**Top Programming Language by Year from [TIOBE Index](https://www.tiobe.com/tiobe-index/)**
-![code](https://i.imgur.com/1pbT6BC.png)
-
-***
 
 **Baseball Strikeouts vs. Batting Avg. From [Lahman](http://www.seanlahman.com/baseball-archive/statistics)**
 ![baseball](https://i.imgur.com/XeA1mS1.png)
