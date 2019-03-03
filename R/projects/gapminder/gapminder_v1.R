@@ -1,17 +1,29 @@
+############################################
+#                                          #
+#  Just a test of graphics with gapminder  #
+#                                          #
+############################################
+
+
+# Load Packages
 library(ggplot2)
-install.packages('gapminder')
 library(gapminder)
 library(scales)
 
-mergedata <- a %>%
+
+# Mutate Data to include a numeric "by_year"
+mergedata <- data.frame(gapminder) %>%
   group_by(year) %>%
   mutate(life_by_year = sum(as.numeric(lifeExp)*as.numeric(pop))/sum(as.numeric(pop)))
   
+
+# Filter to just American Data
 usa <- mergedata %>%
   filter(continent == 'Americas') %>%
   mutate(percent_better = (lifeExp - life_by_year)/life_by_year)
 
 
+# Plot!
 ggplot(usa, aes(x = year, y = percent_better, fill = country, color = "black")) +
   geom_area() +
   facet_wrap(~country) +

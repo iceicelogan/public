@@ -19,6 +19,7 @@ def is_prime(number):
         for i in range(2, int(round(number ** .5, 0))):
             if number % i == 0:
                 truth = False
+                break
         return truth
 
     # If the number is 1, we return True, as 1 = Prime
@@ -28,3 +29,22 @@ def is_prime(number):
     # If the number is not caught by the above logic, it is < 1, and necessarily not Prime
     else:
         return False
+
+
+import time
+t1 = time.time()
+
+k = []
+for m in range(1, 1000000):
+    if is_prime(m):
+        k.append(m)
+t2 = time.time()
+
+print("This took: "+str(t2-t1)+"sec, and found "+str(len(k))+" primes")
+
+m = []
+for i in range(len(k)):
+    if len(str(k[i]))<6:
+        continue
+    else:
+        if int(str)
