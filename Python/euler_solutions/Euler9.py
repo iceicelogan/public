@@ -1,24 +1,16 @@
 ################################
 #                              #
 #     Solution to Euler 9      #
-#     Longest Collatz Seq      #
+#     Pythagorean Multiple     #
 #                              #
 ################################
 
+# Trick to the problem is reducing dimensionality.
+# Reduce to 2 variables by solving for c in terms of a and b
 
-sum = 0
-i = 1
-while i < 1000000:
-    tempsum = 1
-    j = i
-    while j > 1:
-        if j % 2 == 0:
-            j = j/2
-            tempsum += 1
-        else:
-            j = (3*j + 1)/2
-            tempsum += 2
-    if tempsum > sum:
-        print(str(i)+" produced a length "+str(tempsum))
-        sum = tempsum
-    i += 1
+for i in range(1,1000):
+    for j in range(1,1000):
+            k = ((i**2+j**2)**.5)
+            if k % 1 == 0:
+                if i + j + k == 1000:
+                    print(i*j*k)
