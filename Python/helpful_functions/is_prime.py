@@ -30,21 +30,3 @@ def is_prime(number):
     else:
         return False
 
-
-import time
-t1 = time.time()
-
-k = []
-for m in range(1, 1000000):
-    if is_prime(m):
-        k.append(m)
-t2 = time.time()
-
-print("This took: "+str(t2-t1)+"sec, and found "+str(len(k))+" primes")
-
-m = []
-for i in range(len(k)):
-    if len(str(k[i]))<6:
-        continue
-    else:
-        if int(str)
