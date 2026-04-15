@@ -1,6 +1,8 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { WorkoutSession, BodyMetricsEntry, UserProfile, ChatMessage } from '../types';
 import { formatDate, isWithinDays } from './helpers';
+
+const MODEL = 'gemini-1.5-flash';
 
 // ─── System prompt builder ────────────────────────────────────────────────────
 
@@ -74,7 +76,7 @@ COACHING GUIDELINES:
 - Keep responses under 200 words unless the question explicitly needs more detail`;
 }
 
-// ─── Streaming chat — direct SDK call, no server needed ──────────────────────
+// ─── Streaming chat — Gemini 1.5 Flash (free tier) ───────────────────────────
 
 export async function streamChat(
   apiKey: string,
@@ -84,35 +86,31 @@ export async function streamChat(
   onChunk: (text: string) => void,
   onError: (error: string) => void
 ): Promise<void> {
-  const client = new Anthropic({
-    apiKey,
-    dangerouslyAllowBrowser: true,
-  });
-
-  const messages = [
-    ...history.slice(-10).map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
-    { role: 'user' as const, content: userMessage },
-  ];
-
   try {
-    const stream = client.messages.stream({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages,
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: MODEL,
+      systemInstruction: systemPrompt,
     });
 
-    stream.on('text', (text) => {
-      onChunk(text);
-    });
+    // Gemini uses 'model' instead of 'assistant' for the AI role
+    const chatHistory = history.slice(-10).map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
 
-    await stream.finalMessage();
+    const chat = model.startChat({ history: chatHistory });
+    const result = await chat.sendMessageStream(userMessage);
+
+    for await (const chunk of result.stream) {
+      onChunk(chunk.text());
+    }
   } catch (err) {
     onError(err instanceof Error ? err.message : 'Unknown error');
   }
 }
 
-// ─── Weekly digest — direct SDK call ─────────────────────────────────────────
+// ─── Weekly digest ────────────────────────────────────────────────────────────
 
 export async function fetchWeeklyDigest(
   apiKey: string,
@@ -120,28 +118,19 @@ export async function fetchWeeklyDigest(
   sessions: WorkoutSession[],
   metrics: BodyMetricsEntry[]
 ): Promise<string> {
-  const client = new Anthropic({
-    apiKey,
-    dangerouslyAllowBrowser: true,
-  });
-
   const systemPrompt = buildSystemPrompt(profile, sessions, metrics);
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 800,
-    system: systemPrompt,
-    messages: [
-      {
-        role: 'user',
-        content:
-          "Give me my weekly digest. In 3 short sections: 1) What I did this week (brief), 2) What's trending (weight, strength), 3) One concrete thing to do differently next week. Be specific and direct.",
-      },
-    ],
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    model: MODEL,
+    systemInstruction: systemPrompt,
   });
 
-  const content = response.content[0];
-  return content.type === 'text' ? content.text : '';
+  const result = await model.generateContent(
+    "Give me my weekly digest. In 3 short sections: 1) What I did this week (brief), 2) What's trending (weight, strength), 3) One concrete thing to do differently next week. Be specific and direct."
+  );
+
+  return result.response.text();
 }
 
 // ─── Context summary helper ───────────────────────────────────────────────────
