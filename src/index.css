@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Smooth momentum scrolling on iOS */
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-orange-500 active:bg-orange-600 text-white font-semibold py-3 px-5 rounded-xl
+           transition-colors touch-manipulation select-none;
+  }
+
+  .btn-secondary {
+    @apply bg-slate-700 active:bg-slate-600 text-slate-100 font-semibold py-3 px-5 rounded-xl
+           transition-colors touch-manipulation select-none;
+  }
+
+  .btn-ghost {
+    @apply text-slate-400 active:text-slate-100 font-medium py-2 px-4 rounded-lg
+           transition-colors touch-manipulation select-none;
+  }
+
+  .card {
+    @apply bg-slate-900 border border-slate-800 rounded-2xl p-4;
+  }
+
+  .input-field {
+    @apply bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100
+           placeholder-slate-500 focus:outline-none focus:border-orange-500 w-full text-base;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest text-slate-500;
+  }
+}
+
+/* Safe area padding for notched phones */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
