@@ -10,7 +10,7 @@ export default function SettingsPage() {
   const [startWeight, setStartWeight] = useState(profile.startWeight.toString());
   const [goalMin, setGoalMin] = useState(profile.goalWeightMin.toString());
   const [goalMax, setGoalMax] = useState(profile.goalWeightMax.toString());
-  const [apiKey, setApiKey] = useState(profile.anthropicApiKey);
+  const [apiKey, setApiKey] = useState(profile.aiApiKey);
   const [showKey, setShowKey] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -21,7 +21,7 @@ export default function SettingsPage() {
       startWeight: parseFloat(startWeight) || 185,
       goalWeightMin: parseFloat(goalMin) || 170,
       goalWeightMax: parseFloat(goalMax) || 175,
-      anthropicApiKey: apiKey.trim(),
+      aiApiKey: apiKey.trim(),
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -106,14 +106,20 @@ export default function SettingsPage() {
 
         {/* AI API Key */}
         <div>
-          <p className="section-label mb-1">Anthropic API Key</p>
-          <p className="text-xs text-slate-600 mb-3">
-            Required for the AI Buddy. Never leaves your device — stored locally, sent only to your local proxy server.
-          </p>
+          <p className="section-label mb-1">Google AI Studio API Key</p>
+          <div className="bg-slate-800/60 border border-slate-700 rounded-xl p-3 mb-3">
+            <p className="text-xs text-slate-300 font-medium mb-1">Free — no credit card needed</p>
+            <p className="text-xs text-slate-500">
+              1. Go to <span className="text-orange-400 font-mono">aistudio.google.com</span>{'\n'}
+              2. Sign in with Google{'\n'}
+              3. Click <span className="text-slate-300">Get API key</span> → Create API key{'\n'}
+              4. Paste it below
+            </p>
+          </div>
           <div className="relative">
             <input
               type={showKey ? 'text' : 'password'}
-              placeholder="sk-ant-..."
+              placeholder="AIzaSy..."
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="input-field pr-16 font-mono text-sm"
@@ -167,7 +173,7 @@ export default function SettingsPage() {
           <div className="flex flex-col gap-1 text-xs text-slate-500">
             <p>All data stored locally in your browser (localStorage).</p>
             <p>No account, no server, no tracking.</p>
-            <p className="mt-1">AI model: claude-sonnet-4-20250514</p>
+            <p className="mt-1">AI model: gemini-1.5-flash (free tier)</p>
           </div>
         </div>
 

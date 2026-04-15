@@ -17,7 +17,7 @@ const DEFAULT_PROFILE: UserProfile = {
   startWeight: 185,
   goalWeightMin: 170,
   goalWeightMax: 175,
-  anthropicApiKey: '',
+  aiApiKey: '',
 };
 
 // ─── State shape ──────────────────────────────────────────────────────────────

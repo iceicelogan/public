@@ -73,7 +73,7 @@ export default function ChatPage() {
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || streaming) return;
-    if (!profile.anthropicApiKey) {
+    if (!profile.aiApiKey) {
       setError('Add your Anthropic API key in Settings to use the AI buddy.');
       return;
     }
@@ -89,7 +89,7 @@ export default function ChatPage() {
     let fullText = '';
 
     await streamChat(
-      profile.anthropicApiKey,
+      profile.aiApiKey,
       systemPrompt,
       chatHistory,
       userMsg,
@@ -120,7 +120,7 @@ export default function ChatPage() {
   };
 
   const handleDigest = async () => {
-    if (!profile.anthropicApiKey) {
+    if (!profile.aiApiKey) {
       setError('Add your Anthropic API key in Settings first.');
       return;
     }
@@ -128,7 +128,7 @@ export default function ChatPage() {
     setError(null);
 
     try {
-      const text = await fetchWeeklyDigest(profile.anthropicApiKey, profile, sessions, metrics);
+      const text = await fetchWeeklyDigest(profile.aiApiKey, profile, sessions, metrics);
       addChatMessage({ role: 'user', content: 'Give me my weekly digest.' });
       addChatMessage({ role: 'assistant', content: text });
     } catch (err) {
@@ -138,13 +138,13 @@ export default function ChatPage() {
     }
   };
 
-  const hasNoKey = !profile.anthropicApiKey;
+  const hasNoKey = !profile.aiApiKey;
 
   return (
     <div className="flex flex-col h-full">
       <Header
         title="AI Buddy"
-        subtitle="claude-sonnet-4-20250514"
+        subtitle="gemini-1.5-flash · free tier"
         right={
           <div className="flex gap-2">
             <button
