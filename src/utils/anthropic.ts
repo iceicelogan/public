@@ -1,3 +1,4 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { WorkoutSession, BodyMetricsEntry, UserProfile, ChatMessage } from '../types';
 import { formatDate, isWithinDays } from './helpers';
 
@@ -32,7 +33,10 @@ export function buildSystemPrompt(
     })
     .join('\n\n');
 
-  const weightTrend = recentMetrics.slice(-4).map((m) => `${formatDate(m.date)}: ${m.weight}lbs`).join(', ');
+  const weightTrend = recentMetrics
+    .slice(-4)
+    .map((m) => `${formatDate(m.date)}: ${m.weight}lbs`)
+    .join(', ');
 
   return `You are a personal workout coach AI buddy for a specific individual. Here is their complete profile:
 
@@ -70,7 +74,7 @@ COACHING GUIDELINES:
 - Keep responses under 200 words unless the question explicitly needs more detail`;
 }
 
-// ─── Streaming chat call ──────────────────────────────────────────────────────
+// ─── Streaming chat — direct SDK call, no server needed ──────────────────────
 
 export async function streamChat(
   apiKey: string,
@@ -80,65 +84,35 @@ export async function streamChat(
   onChunk: (text: string) => void,
   onError: (error: string) => void
 ): Promise<void> {
+  const client = new Anthropic({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+  });
+
   const messages = [
-    ...history.slice(-10).map((m) => ({ role: m.role, content: m.content })),
+    ...history.slice(-10).map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
     { role: 'user' as const, content: userMessage },
   ];
 
   try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages, systemPrompt, apiKey }),
+    const stream = client.messages.stream({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages,
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({ error: 'Server error' }));
-      onError(err.error ?? 'Request failed');
-      return;
-    }
+    stream.on('text', (text) => {
+      onChunk(text);
+    });
 
-    const reader = response.body?.getReader();
-    if (!reader) {
-      onError('No response body');
-      return;
-    }
-
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() ?? '';
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6);
-        if (data === '[DONE]') return;
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.error) {
-            onError(parsed.error);
-            return;
-          }
-          if (parsed.text) {
-            onChunk(parsed.text);
-          }
-        } catch {
-          // skip malformed chunks
-        }
-      }
-    }
+    await stream.finalMessage();
   } catch (err) {
-    onError(err instanceof Error ? err.message : 'Network error');
+    onError(err instanceof Error ? err.message : 'Unknown error');
   }
 }
 
-// ─── Weekly digest call ───────────────────────────────────────────────────────
+// ─── Weekly digest — direct SDK call ─────────────────────────────────────────
 
 export async function fetchWeeklyDigest(
   apiKey: string,
@@ -146,34 +120,31 @@ export async function fetchWeeklyDigest(
   sessions: WorkoutSession[],
   metrics: BodyMetricsEntry[]
 ): Promise<string> {
-  const systemPrompt = buildSystemPrompt(profile, sessions, metrics);
-
-  const response = await fetch('/api/digest', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      apiKey,
-      systemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content:
-            "Give me my weekly digest. In 3 short sections: 1) What I did this week (brief), 2) What's trending (weight, strength), 3) One concrete thing to do differently next week. Be specific and direct.",
-        },
-      ],
-    }),
+  const client = new Anthropic({
+    apiKey,
+    dangerouslyAllowBrowser: true,
   });
 
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({ error: 'Server error' }));
-    throw new Error(err.error ?? 'Digest request failed');
-  }
+  const systemPrompt = buildSystemPrompt(profile, sessions, metrics);
 
-  const data = await response.json();
-  return data.text ?? '';
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 800,
+    system: systemPrompt,
+    messages: [
+      {
+        role: 'user',
+        content:
+          "Give me my weekly digest. In 3 short sections: 1) What I did this week (brief), 2) What's trending (weight, strength), 3) One concrete thing to do differently next week. Be specific and direct.",
+      },
+    ],
+  });
+
+  const content = response.content[0];
+  return content.type === 'text' ? content.text : '';
 }
 
-// ─── Quick context summary for session-based questions ────────────────────────
+// ─── Context summary helper ───────────────────────────────────────────────────
 
 export function buildContextSummary(
   sessions: WorkoutSession[],
