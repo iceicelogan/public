@@ -22,8 +22,10 @@ interface AppState {
   metrics: BodyMetricsEntry[];
   activeSession: WorkoutSession | null;
   currentPage: 'dashboard' | 'workout' | 'metrics' | 'settings';
+  pendingProgramGroup: string | null;
 
   updateProfile: (updates: Partial<UserProfile>) => void;
+  openProgram: (group: string | null) => void;
   startSession: (templateId?: string, templateName?: string) => void;
   updateActiveSession: (updates: Partial<WorkoutSession>) => void;
   finishSession: () => void;
@@ -45,6 +47,7 @@ export const useStore = create<AppState>()(
       metrics: [],
       activeSession: null,
       currentPage: 'dashboard',
+      pendingProgramGroup: null,
 
       updateProfile: (updates) =>
         set((state) => ({ profile: { ...state.profile, ...updates } })),
@@ -106,6 +109,7 @@ export const useStore = create<AppState>()(
         set((state) => ({ metrics: state.metrics.filter((m) => m.id !== id) })),
 
       navigate: (page) => set({ currentPage: page }),
+      openProgram: (group) => set({ pendingProgramGroup: group }),
     }),
     {
       name: 'workout-buddy-v2',

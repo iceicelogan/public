@@ -405,6 +405,12 @@ export const TEMPLATE_GROUPS: Record<string, WorkoutTemplate[]> = {
   '4-Day Upper/Lower': [upperA, upperB, lowerA, lowerB],
 };
 
+// Canonical day order for "next day" suggestion
+export const TEMPLATE_GROUP_ORDER: Record<string, string[]> = {
+  '3-Day Full Body': ['fb-a', 'fb-b', 'fb-c'],
+  '4-Day Upper/Lower': ['ul-upper-a', 'ul-lower-a', 'ul-upper-b', 'ul-lower-b'],
+};
+
 export const EXERCISE_LIST = [
   // Cable machine
   'Cable Chest Press',

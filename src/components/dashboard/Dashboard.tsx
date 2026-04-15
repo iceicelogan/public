@@ -17,7 +17,7 @@ import {
 } from 'recharts';
 
 export default function Dashboard() {
-  const { profile, sessions, metrics, navigate } = useStore();
+  const { profile, sessions, metrics, navigate, openProgram } = useStore();
 
   const streak = useMemo(() => computeStreak(sessions), [sessions]);
   const weekSessions = useMemo(() => sessionsThisWeek(sessions), [sessions]);
@@ -303,8 +303,8 @@ export default function Dashboard() {
               <span>Day B — Chest, shoulder press, tricep pushdown, curls, legs</span>
               <span>Day C — Light full body + treadmill (active recovery)</span>
             </div>
-            <button onClick={() => navigate('workout')} className="btn-primary w-full">
-              Start Full Body A →
+            <button onClick={() => { openProgram('3-Day Full Body'); navigate('workout'); }} className="btn-primary w-full">
+              Start Full Body →
             </button>
           </div>
 
@@ -319,7 +319,7 @@ export default function Dashboard() {
             <p className="text-slate-400 text-xs mb-3">
               More volume per muscle group. Good if you can commit to 4 days and want to push harder on each session.
             </p>
-            <button onClick={() => navigate('workout')} className="btn-secondary w-full">
+            <button onClick={() => { openProgram('4-Day Upper/Lower'); navigate('workout'); }} className="btn-secondary w-full">
               View Upper/Lower →
             </button>
           </div>
