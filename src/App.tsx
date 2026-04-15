@@ -4,7 +4,6 @@ import BottomNav from './components/layout/BottomNav';
 import Dashboard from './components/dashboard/Dashboard';
 import WorkoutPage from './components/workout/WorkoutPage';
 import MetricsPage from './components/metrics/MetricsPage';
-import ChatPage from './components/chat/ChatPage';
 import SettingsPage from './components/settings/SettingsPage';
 
 export default function App() {
@@ -14,18 +13,14 @@ export default function App() {
     dashboard: <Dashboard />,
     workout: <WorkoutPage />,
     metrics: <MetricsPage />,
-    chat: <ChatPage />,
     settings: <SettingsPage />,
   };
 
   return (
     <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-slate-950 overflow-hidden">
-      {/* Page content — scrollable region */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {pages[currentPage]}
       </div>
-
-      {/* Fixed bottom nav */}
       <BottomNav />
     </div>
   );

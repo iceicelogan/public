@@ -7,7 +7,6 @@ export interface UserProfile {
   startWeight: number;
   goalWeightMin: number;
   goalWeightMax: number;
-  aiApiKey: string;
 }
 
 // ─── Workout / Exercise types ─────────────────────────────────────────────────

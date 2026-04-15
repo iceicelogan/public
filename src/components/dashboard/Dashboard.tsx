@@ -60,7 +60,8 @@ export default function Dashboard() {
     : 0;
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-4 pb-24">
+    <div className="flex-1 overflow-y-auto">
+    <div className="flex flex-col gap-4 px-4 py-4 pb-6">
       {/* Greeting */}
       <div>
         <p className="text-slate-400 text-sm">
@@ -72,7 +73,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick actions */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <button
           onClick={() => navigate('workout')}
           className="flex flex-col items-center gap-2 bg-orange-500 rounded-2xl p-4 active:bg-orange-600 touch-manipulation"
@@ -91,16 +92,6 @@ export default function Dashboard() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
           </svg>
           <span className="text-slate-300 text-xs font-semibold text-center leading-tight">Log Weight</span>
-        </button>
-
-        <button
-          onClick={() => navigate('chat')}
-          className="flex flex-col items-center gap-2 bg-slate-800 rounded-2xl p-4 active:bg-slate-700 touch-manipulation"
-        >
-          <svg className="w-7 h-7 text-slate-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          <span className="text-slate-300 text-xs font-semibold text-center leading-tight">Chat Buddy</span>
         </button>
       </div>
 
@@ -333,11 +324,9 @@ export default function Dashboard() {
             </button>
           </div>
 
-          <p className="text-center text-xs text-slate-600 px-4">
-            Not sure? Ask the AI Buddy — tap <span className="text-orange-500">Buddy</span> below.
-          </p>
         </div>
       )}
+    </div>
     </div>
   );
 }

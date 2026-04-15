@@ -10,8 +10,6 @@ export default function SettingsPage() {
   const [startWeight, setStartWeight] = useState(profile.startWeight.toString());
   const [goalMin, setGoalMin] = useState(profile.goalWeightMin.toString());
   const [goalMax, setGoalMax] = useState(profile.goalWeightMax.toString());
-  const [apiKey, setApiKey] = useState(profile.aiApiKey);
-  const [showKey, setShowKey] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
@@ -21,7 +19,6 @@ export default function SettingsPage() {
       startWeight: parseFloat(startWeight) || 185,
       goalWeightMin: parseFloat(goalMin) || 170,
       goalWeightMax: parseFloat(goalMax) || 175,
-      aiApiKey: apiKey.trim(),
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -40,7 +37,7 @@ export default function SettingsPage() {
     <div className="flex flex-col h-full">
       <Header title="Settings" />
 
-      <div className="flex-1 overflow-y-auto pb-24 px-4 py-4 flex flex-col gap-6">
+      <div className="flex-1 overflow-y-auto pb-8 px-4 py-4 flex flex-col gap-6">
         {/* Profile */}
         <div>
           <p className="section-label mb-3">Your Profile</p>
@@ -104,44 +101,10 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* AI API Key */}
-        <div>
-          <p className="section-label mb-1">Google AI Studio API Key</p>
-          <div className="bg-slate-800/60 border border-slate-700 rounded-xl p-3 mb-3">
-            <p className="text-xs text-slate-300 font-medium mb-1">Free — no credit card needed</p>
-            <p className="text-xs text-slate-500">
-              1. Go to <span className="text-orange-400 font-mono">aistudio.google.com</span>{'\n'}
-              2. Sign in with Google{'\n'}
-              3. Click <span className="text-slate-300">Get API key</span> → Create API key{'\n'}
-              4. Paste it below
-            </p>
-          </div>
-          <div className="relative">
-            <input
-              type={showKey ? 'text' : 'password'}
-              placeholder="AIzaSy..."
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="input-field pr-16 font-mono text-sm"
-              autoComplete="off"
-              spellCheck={false}
-            />
-            <button
-              onClick={() => setShowKey((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs touch-manipulation"
-            >
-              {showKey ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {apiKey && (
-            <p className="text-green-400 text-xs mt-1">✓ API key set</p>
-          )}
-        </div>
-
         {/* Equipment info */}
         <div className="card">
           <p className="section-label mb-2">Your Equipment</p>
-          <ul className="text-sm text-slate-400 flex flex-col gap-1">
+          <ul className="flex flex-col gap-1">
             {[
               'Treadmill',
               'Dumbbells (up to 40 lbs)',
@@ -158,7 +121,7 @@ export default function SettingsPage() {
             ))}
           </ul>
           <p className="text-xs text-slate-600 mt-3">
-            The AI buddy is locked to this equipment list and will never suggest gear you don't have.
+            Cable machine pin numbers: Pin 1 = 10 lbs, Pin 15 = 150 lbs.
           </p>
         </div>
 
@@ -171,9 +134,8 @@ export default function SettingsPage() {
         <div className="card">
           <p className="section-label mb-2">About</p>
           <div className="flex flex-col gap-1 text-xs text-slate-500">
-            <p>All data stored locally in your browser (localStorage).</p>
+            <p>All data stored locally on this device.</p>
             <p>No account, no server, no tracking.</p>
-            <p className="mt-1">AI model: gemini-1.5-flash (free tier)</p>
           </div>
         </div>
 
