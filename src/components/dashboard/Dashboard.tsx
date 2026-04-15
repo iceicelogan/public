@@ -285,17 +285,57 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Empty state */}
+      {/* First-time onboarding */}
       {sessions.length === 0 && (
-        <div className="card flex flex-col items-center gap-3 py-8 text-center">
-          <div className="text-4xl">💪</div>
-          <div>
-            <p className="text-slate-100 font-semibold">No workouts logged yet</p>
-            <p className="text-slate-500 text-sm mt-1">Pick a template and start your first session</p>
+        <div className="flex flex-col gap-3">
+          <div className="card border-orange-500/30">
+            <p className="text-orange-400 text-xs font-semibold mb-1">Where to start</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              You have two programs ready to go. Pick one and stick with it for 4–6 weeks before switching.
+            </p>
           </div>
-          <button onClick={() => navigate('workout')} className="btn-primary">
-            Start First Workout
-          </button>
+
+          {/* Option 1 */}
+          <div className="card">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <p className="text-slate-100 font-semibold">3-Day Full Body</p>
+                <p className="text-xs text-slate-500">Mon / Wed / Fri · ~45 min</p>
+              </div>
+              <span className="text-xs bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full font-medium">Recommended</span>
+            </div>
+            <p className="text-slate-400 text-xs mb-3">
+              Best for getting started. Every session hits chest, back, and legs so you build the habit before adding volume.
+            </p>
+            <div className="flex flex-col gap-1 text-xs text-slate-500 mb-4">
+              <span>Day A — Chest press, lat pulldown, pec deck, rows, leg curl/ext</span>
+              <span>Day B — Chest, shoulder press, tricep pushdown, curls, legs</span>
+              <span>Day C — Light full body + treadmill (active recovery)</span>
+            </div>
+            <button onClick={() => navigate('workout')} className="btn-primary w-full">
+              Start Full Body A →
+            </button>
+          </div>
+
+          {/* Option 2 */}
+          <div className="card">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <p className="text-slate-100 font-semibold">4-Day Upper / Lower</p>
+                <p className="text-xs text-slate-500">4 days/week · ~50 min</p>
+              </div>
+            </div>
+            <p className="text-slate-400 text-xs mb-3">
+              More volume per muscle group. Good if you can commit to 4 days and want to push harder on each session.
+            </p>
+            <button onClick={() => navigate('workout')} className="btn-secondary w-full">
+              View Upper/Lower →
+            </button>
+          </div>
+
+          <p className="text-center text-xs text-slate-600 px-4">
+            Not sure? Ask the AI Buddy — tap <span className="text-orange-500">Buddy</span> below.
+          </p>
         </div>
       )}
     </div>

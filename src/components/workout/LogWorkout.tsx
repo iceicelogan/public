@@ -8,17 +8,25 @@ interface Props {
   onBack: () => void;
 }
 
+// Marcy stack: 150 lbs / 15 pins = 10 lbs per pin
+const LBS_PER_PIN = 10;
+const lbsToPin = (lbs: number) => Math.round(lbs / LBS_PER_PIN);
+const pinToLbs = (pin: number) => pin * LBS_PER_PIN;
+
 function SetRow({
   set,
-  isCardio,
+  category,
   onChange,
   onRemove,
 }: {
   set: SetLog;
-  isCardio: boolean;
+  category: ExerciseCategory;
   onChange: (updates: Partial<SetLog>) => void;
   onRemove: () => void;
 }) {
+  const isCardio = category === 'cardio';
+  const isCable = category === 'cable';
+
   return (
     <div className={`flex items-center gap-2 py-1 ${set.completed ? 'opacity-60' : ''}`}>
       <button
@@ -61,6 +69,30 @@ function SetRow({
               onChange({ duration: mins ? mins * 60 : undefined });
             }}
             className="input-field w-16 text-center text-sm py-2"
+          />
+        </>
+      ) : isCable ? (
+        <>
+          <input
+            type="number"
+            inputMode="numeric"
+            placeholder="pin"
+            min={1}
+            max={15}
+            value={set.weight ? lbsToPin(set.weight) : ''}
+            onChange={(e) => {
+              const pin = parseInt(e.target.value);
+              onChange({ weight: pin ? pinToLbs(pin) : undefined });
+            }}
+            className="input-field flex-1 text-center text-sm py-2"
+          />
+          <input
+            type="number"
+            inputMode="numeric"
+            placeholder="reps"
+            value={set.reps ?? ''}
+            onChange={(e) => onChange({ reps: parseInt(e.target.value) || undefined })}
+            className="input-field flex-1 text-center text-sm py-2"
           />
         </>
       ) : (
@@ -106,6 +138,7 @@ function ExerciseCard({
   onRemove: () => void;
 }) {
   const isCardio = exercise.category === 'cardio';
+  const isCable = exercise.category === 'cable';
   const completedSets = exercise.sets.filter((s) => s.completed).length;
 
   const addSet = () => {
@@ -163,7 +196,9 @@ function ExerciseCard({
             </>
           ) : (
             <>
-              <span className="text-[10px] text-slate-600 flex-1 text-center">weight</span>
+              <span className="text-[10px] text-slate-600 flex-1 text-center">
+                {isCable ? 'pin # (1–15)' : 'lbs'}
+              </span>
               <span className="text-[10px] text-slate-600 flex-1 text-center">reps</span>
             </>
           )}
@@ -177,7 +212,7 @@ function ExerciseCard({
           <SetRow
             key={set.id}
             set={set}
-            isCardio={isCardio}
+            category={exercise.category}
             onChange={(updates) => updateSet(set.id, updates)}
             onRemove={() => removeSet(set.id)}
           />

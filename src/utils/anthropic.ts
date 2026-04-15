@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { WorkoutSession, BodyMetricsEntry, UserProfile, ChatMessage } from '../types';
 import { formatDate, isWithinDays } from './helpers';
 
-const MODEL = 'gemini-1.5-flash';
+const MODEL = 'gemini-2.0-flash';
 
 // ─── System prompt builder ────────────────────────────────────────────────────
 

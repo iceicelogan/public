@@ -54,7 +54,11 @@ function SessionCard({ session, onDelete }: { session: WorkoutSession; onDelete:
                     {completedSets.map((set, i) => (
                       <p key={set.id} className="text-xs text-slate-500">
                         Set {i + 1}:
-                        {set.weight && set.reps ? ` ${set.weight}lbs × ${set.reps}` : ''}
+                        {set.weight && set.reps
+                          ? ex.category === 'cable'
+                            ? ` Pin ${Math.round(set.weight / 10)} × ${set.reps}`
+                            : ` ${set.weight}lbs × ${set.reps}`
+                          : ''}
                         {set.duration ? ` ${Math.round(set.duration / 60)}min` : ''}
                         {set.distance ? ` · ${set.distance}mi` : ''}
                         {set.incline ? ` · ${set.incline}% inc` : ''}

@@ -74,7 +74,7 @@ export default function ChatPage() {
   const sendMessage = async (text: string) => {
     if (!text.trim() || streaming) return;
     if (!profile.aiApiKey) {
-      setError('Add your Anthropic API key in Settings to use the AI buddy.');
+      setError('Add your Google AI Studio key in Settings to use the AI buddy.');
       return;
     }
 
@@ -141,10 +141,10 @@ export default function ChatPage() {
   const hasNoKey = !profile.aiApiKey;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col" style={{ height: 'calc(100dvh - 3.75rem - env(safe-area-inset-bottom, 0px))' }}>
       <Header
         title="AI Buddy"
-        subtitle="gemini-1.5-flash · free tier"
+        subtitle="gemini-2.0-flash · free tier"
         right={
           <div className="flex gap-2">
             <button
@@ -173,7 +173,7 @@ export default function ChatPage() {
         <div className="mx-4 mt-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3">
           <p className="text-yellow-400 text-xs font-semibold">API key not set</p>
           <p className="text-yellow-300/70 text-xs mt-0.5">
-            Go to Settings and enter your Anthropic API key to chat.
+            Go to Settings → paste your free Google AI Studio key.
           </p>
         </div>
       )}
@@ -224,7 +224,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input area */}
-      <div className="border-t border-slate-800 px-4 py-3 pb-safe bg-slate-950" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)' }}>
+      <div className="border-t border-slate-800 px-4 pt-3 pb-4 bg-slate-950">
         {/* Quick prompts when there's history */}
         {chatHistory.length > 0 && (
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">

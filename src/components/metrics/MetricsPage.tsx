@@ -9,95 +9,25 @@ import { BodyMetricsEntry } from '../../types';
 type Window = 30 | 60 | 90;
 
 function EntryCard({ entry, onDelete }: { entry: BodyMetricsEntry; onDelete: () => void }) {
-  const [expanded, setExpanded] = useState(false);
-  const hasMeasurements = entry.measurements && Object.values(entry.measurements).some(Boolean);
-
   return (
-    <div className="card">
-      <button onClick={() => setExpanded((v) => !v)} className="w-full text-left touch-manipulation">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-slate-100 font-semibold">
-              {entry.weight ? `${entry.weight} lbs` : 'No weight'}
-            </p>
-            <p className="text-slate-500 text-xs mt-0.5">{formatDate(entry.date)}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            {entry.weeklyCheckIn && (
-              <span className="text-xs text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full">
-                check-in
-              </span>
-            )}
-            <svg
-              className={`w-4 h-4 text-slate-500 transition-transform ${expanded ? 'rotate-180' : ''}`}
-              fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </div>
+    <div className="card flex items-center justify-between">
+      <div>
+        <p className="text-slate-100 font-semibold">
+          {entry.weight ? `${entry.weight} lbs` : '—'}
+        </p>
+        <p className="text-slate-500 text-xs mt-0.5">
+          {formatDate(entry.date)}
+          {entry.notes ? ` · ${entry.notes}` : ''}
+        </p>
+      </div>
+      <button
+        onClick={() => { if (window.confirm('Delete?')) onDelete(); }}
+        className="text-slate-700 active:text-red-400 p-2 touch-manipulation"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
       </button>
-
-      {expanded && (
-        <div className="mt-3 pt-3 border-t border-slate-800 flex flex-col gap-3">
-          {hasMeasurements && (
-            <div>
-              <p className="section-label mb-2">Measurements (in)</p>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  ['Waist', entry.measurements?.waist],
-                  ['Chest', entry.measurements?.chest],
-                  ['L Arm', entry.measurements?.leftArm],
-                  ['R Arm', entry.measurements?.rightArm],
-                  ['L Thigh', entry.measurements?.leftThigh],
-                  ['R Thigh', entry.measurements?.rightThigh],
-                ]
-                  .filter(([, v]) => v)
-                  .map(([label, value]) => (
-                    <div key={label as string} className="text-center">
-                      <p className="text-slate-100 font-semibold text-sm">{value}"</p>
-                      <p className="text-slate-600 text-[10px]">{label as string}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {entry.weeklyCheckIn && (
-            <div>
-              <p className="section-label mb-2">Weekly Check-In</p>
-              <div className="grid grid-cols-3 gap-2 mb-2">
-                {[
-                  ['Sleep', entry.weeklyCheckIn.sleepQuality],
-                  ['Stress', entry.weeklyCheckIn.stressLevel],
-                  ['Energy', entry.weeklyCheckIn.energyLevel],
-                ].map(([label, value]) => (
-                  <div key={label as string} className="text-center">
-                    <p className="text-slate-100 font-bold">{value}/5</p>
-                    <p className="text-slate-600 text-[10px]">{label as string}</p>
-                  </div>
-                ))}
-              </div>
-              {entry.weeklyCheckIn.notes && (
-                <p className="text-xs text-slate-500 italic">"{entry.weeklyCheckIn.notes}"</p>
-              )}
-            </div>
-          )}
-
-          {entry.notes && (
-            <p className="text-xs text-slate-500 italic">"{entry.notes}"</p>
-          )}
-
-          <button
-            onClick={() => {
-              if (window.confirm('Delete this entry?')) onDelete();
-            }}
-            className="text-xs text-red-400 text-left touch-manipulation"
-          >
-            Delete entry
-          </button>
-        </div>
-      )}
     </div>
   );
 }
