@@ -108,7 +108,7 @@ export const useStore = create<AppState>()(
       navigate: (page) => set({ currentPage: page }),
     }),
     {
-      name: 'workout-buddy-v1',
+      name: 'workout-buddy-v2',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         profile: state.profile,
