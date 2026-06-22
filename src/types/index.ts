@@ -112,6 +112,21 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+// ─── Notes / To-Do ───────────────────────────────────────────────────────────
+
+export interface TodoItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+export interface NotesList {
+  id: string;
+  createdAt: string;
+  imageDataUrl?: string;
+  items: TodoItem[];
+}
+
 // ─── PR / Progress tracking ───────────────────────────────────────────────────
 
 export interface PersonalRecord {

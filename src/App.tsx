@@ -5,8 +5,9 @@ import Dashboard from './components/dashboard/Dashboard';
 import WorkoutPage from './components/workout/WorkoutPage';
 import MetricsPage from './components/metrics/MetricsPage';
 import SettingsPage from './components/settings/SettingsPage';
+import NotesPage from './components/notes/NotesPage';
 
-const VALID_PAGES = ['dashboard', 'workout', 'metrics', 'settings'] as const;
+const VALID_PAGES = ['dashboard', 'workout', 'metrics', 'settings', 'notes'] as const;
 
 export default function App() {
   const { currentPage } = useStore();
@@ -20,6 +21,7 @@ export default function App() {
     workout: <WorkoutPage />,
     metrics: <MetricsPage />,
     settings: <SettingsPage />,
+    notes: <NotesPage />,
   };
 
   return (
