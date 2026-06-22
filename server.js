@@ -4,7 +4,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const app = express();
 app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:4173'] }));
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '20mb' }));
 
 // Streaming chat endpoint
 app.post('/api/chat', async (req, res) => {
@@ -68,6 +68,48 @@ app.post('/api/digest', async (req, res) => {
     } else {
       res.json({ text: '' });
     }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    res.status(500).json({ error: message });
+  }
+});
+
+// Extract to-do items from a handwritten notes image
+app.post('/api/extract-todos', async (req, res) => {
+  const { imageBase64, mediaType, apiKey } = req.body;
+
+  const key = apiKey || process.env.ANTHROPIC_API_KEY;
+  if (!key) {
+    return res.status(400).json({ error: 'API key required.' });
+  }
+
+  const client = new Anthropic({ apiKey: key });
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1024,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mediaType || 'image/jpeg', data: imageBase64 },
+            },
+            {
+              type: 'text',
+              text: 'Extract all to-do items, tasks, or action items from this handwritten note. Return ONLY a JSON array of strings, one per task. If you see bullet points, checkboxes, dashes, or numbered lists treat each as a separate item. Clean up any OCR artifacts. Example output: ["Buy groceries","Call dentist","Finish report"]. If no tasks found return [].',
+            },
+          ],
+        },
+      ],
+    });
+
+    const text = response.content[0].type === 'text' ? response.content[0].text : '[]';
+    const match = text.match(/\[[\s\S]*\]/);
+    const items = match ? JSON.parse(match[0]) : [];
+    res.json({ items });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     res.status(500).json({ error: message });

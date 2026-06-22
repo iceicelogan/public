@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '../../store/useStore';
 
-type Page = 'dashboard' | 'workout' | 'metrics' | 'settings';
+type Page = 'dashboard' | 'workout' | 'metrics' | 'settings' | 'notes';
 
 const NAV_ITEMS: { page: Page; label: string; icon: (active: boolean) => React.ReactNode }[] = [
   {
@@ -28,6 +28,15 @@ const NAV_ITEMS: { page: Page; label: string; icon: (active: boolean) => React.R
     icon: (a) => (
       <svg viewBox="0 0 24 24" className={`w-6 h-6 ${a ? 'text-orange-500' : 'text-slate-500'}`} fill="none" stroke="currentColor" strokeWidth={a ? 2.5 : 1.8} strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 20h18M6 20V10M12 20V4M18 20v-8" />
+      </svg>
+    ),
+  },
+  {
+    page: 'notes',
+    label: 'Notes',
+    icon: (a) => (
+      <svg viewBox="0 0 24 24" className={`w-6 h-6 ${a ? 'text-orange-500' : 'text-slate-500'}`} fill="none" stroke="currentColor" strokeWidth={a ? 2.5 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
       </svg>
     ),
   },

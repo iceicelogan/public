@@ -4,6 +4,8 @@ import {
   UserProfile,
   WorkoutSession,
   BodyMetricsEntry,
+  NotesList,
+  TodoItem,
 } from '../types';
 import { genId, todayISO } from '../utils/helpers';
 
@@ -21,7 +23,9 @@ interface AppState {
   sessions: WorkoutSession[];
   metrics: BodyMetricsEntry[];
   activeSession: WorkoutSession | null;
-  currentPage: 'dashboard' | 'workout' | 'metrics' | 'settings';
+  currentPage: 'dashboard' | 'workout' | 'metrics' | 'settings' | 'notes';
+  notesLists: NotesList[];
+  apiKey: string;
   pendingProgramGroup: string | null;
 
   updateProfile: (updates: Partial<UserProfile>) => void;
@@ -37,6 +41,12 @@ interface AppState {
   updateMetrics: (id: string, updates: Partial<BodyMetricsEntry>) => void;
   deleteMetrics: (id: string) => void;
   navigate: (page: AppState['currentPage']) => void;
+  setApiKey: (key: string) => void;
+  saveNotesList: (list: NotesList) => void;
+  updateNotesList: (id: string, updates: Partial<NotesList>) => void;
+  deleteNotesList: (id: string) => void;
+  updateTodoItem: (listId: string, itemId: string, updates: Partial<TodoItem>) => void;
+  reorderTodoItems: (listId: string, items: TodoItem[]) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -48,6 +58,8 @@ export const useStore = create<AppState>()(
       activeSession: null,
       currentPage: 'dashboard',
       pendingProgramGroup: null,
+      notesLists: [],
+      apiKey: '',
 
       updateProfile: (updates) =>
         set((state) => ({ profile: { ...state.profile, ...updates } })),
@@ -110,6 +122,27 @@ export const useStore = create<AppState>()(
 
       navigate: (page) => set({ currentPage: page }),
       openProgram: (group) => set({ pendingProgramGroup: group }),
+      setApiKey: (key) => set({ apiKey: key }),
+      saveNotesList: (list) =>
+        set((state) => ({ notesLists: [list, ...state.notesLists] })),
+      updateNotesList: (id, updates) =>
+        set((state) => ({
+          notesLists: state.notesLists.map((l) => (l.id === id ? { ...l, ...updates } : l)),
+        })),
+      deleteNotesList: (id) =>
+        set((state) => ({ notesLists: state.notesLists.filter((l) => l.id !== id) })),
+      updateTodoItem: (listId, itemId, updates) =>
+        set((state) => ({
+          notesLists: state.notesLists.map((l) =>
+            l.id === listId
+              ? { ...l, items: l.items.map((i) => (i.id === itemId ? { ...i, ...updates } : i)) }
+              : l
+          ),
+        })),
+      reorderTodoItems: (listId, items) =>
+        set((state) => ({
+          notesLists: state.notesLists.map((l) => (l.id === listId ? { ...l, items } : l)),
+        })),
     }),
     {
       name: 'workout-buddy-v2',
@@ -118,6 +151,8 @@ export const useStore = create<AppState>()(
         profile: state.profile,
         sessions: state.sessions,
         metrics: state.metrics,
+        notesLists: state.notesLists,
+        apiKey: state.apiKey,
       }),
     }
   )
